@@ -89,6 +89,7 @@ class _MyAppState extends State<MyApp> {
 
   void requestStoragePermission() async {
     if (!kIsWeb) {
+      print('is not web');
       bool permissionStatus = await audioQuery.permissionsStatus();
       if (!permissionStatus) {
         await audioQuery.permissionsRequest();
