@@ -46,30 +46,18 @@ class _MyAppState extends State<MyApp> {
 
 
   getSongs() async {
+    bool permissions = await audioQuery.permissionsStatus();
+    if(permissions == false){
+      await audioQuery.permissionsRequest();
+    }
     kSongList = await audioQuery.querySongs();
-  }
-
-  getAlbums() async {
-    // AlbumSortType.ALBUM,
     kAlbumList = await audioQuery.queryAlbums();
-  }
-
-
-  getRecentSongs() async {
     kRecentSongList = await audioQuery.querySongs(
       sortType: SongSortType.DATE_ADDED,
     );
-    FlutterNativeSplash.remove();
-  }
-
-  getArtists() async {
     ArtistSortType.NUM_OF_TRACKS;
     OrderType.ASC_OR_SMALLER;
     kArtistList = await audioQuery.queryArtists();
-  }
-
-  getPlayLists() async {
-
     kPlayList = await audioQuery.queryPlaylists();
     audioQuery.renamePlaylist(68481, 'newName');
     print(kPlayList);
@@ -78,18 +66,13 @@ class _MyAppState extends State<MyApp> {
         audioQuery.addToPlaylist(kPlayList.first.id, each.id);
       }
     }
-  }
-
-  getGenre() async {
     kGenreList = await audioQuery.queryGenres();
+    FlutterNativeSplash.remove();
   }
-
-
 
 
   void requestStoragePermission() async {
     if (!kIsWeb) {
-      print('is not web');
       bool permissionStatus = await audioQuery.permissionsStatus();
       if (!permissionStatus) {
         await audioQuery.permissionsRequest();
@@ -103,12 +86,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     requestStoragePermission();
     getSongs();
-    getAlbums();
-    getRecentSongs();
-    getArtists();
-    getGenre();
-    getPlayLists();
-
   }
 
 
